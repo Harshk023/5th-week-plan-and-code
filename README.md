@@ -207,3 +207,62 @@ if __name__ == "__main__":
 # Merge Sort: O(n log n), Space: O(n)
 # Quick Sort: Average O(n log n), Worst O(n^2), Space: O(log n)
 # ----------------------------------------------------
+
+
+"""
+Day 31: Greedy Basics – Activity Selection Problem
+Author: [Your Name]
+Date: [Today's Date]
+
+Problem:
+You are given n activities with start and finish times. 
+Select the maximum number of activities that can be performed by a single person, 
+assuming the person can work on only one activity at a time.
+
+Approach (Greedy):
+1. Sort activities by their finish time.
+2. Always pick the next activity whose start time is >= finish time of the last selected activity.
+3. This greedy strategy ensures maximum number of activities.
+
+Time Complexity: O(n log n) [for sorting]
+Space Complexity: O(1)
+"""
+
+# ----------------------------------------------------
+# Function to perform Activity Selection
+# ----------------------------------------------------
+def activity_selection(activities):
+    # Sort activities by finish time
+    activities.sort(key=lambda x: x[1])
+    
+    selected = []
+    last_finish = -1
+    
+    for start, finish in activities:
+        if start >= last_finish:
+            selected.append((start, finish))
+            last_finish = finish
+    
+    return selected
+
+
+# ----------------------------------------------------
+# Example Usage
+# ----------------------------------------------------
+if __name__ == "__main__":
+    activities = [(1, 3), (2, 4), (0, 6), (5, 7),
+                  (8, 9), (5, 9)]
+    
+    print("Activities (start, finish):", activities)
+    result = activity_selection(activities)
+    print("Selected Activities:", result)
+    # Expected Output: [(1, 3), (5, 7), (8, 9)]
+
+
+# ----------------------------------------------------
+# Key Notes:
+# ----------------------------------------------------
+# - Sort by finish times.
+# - Always pick the earliest finishing activity available.
+# - Greedy choice ensures global optimal solution.
+# ----------------------------------------------------
