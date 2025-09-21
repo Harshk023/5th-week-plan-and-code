@@ -266,3 +266,74 @@ if __name__ == "__main__":
 # - Always pick the earliest finishing activity available.
 # - Greedy choice ensures global optimal solution.
 # ----------------------------------------------------
+
+
+"""
+Day 32: Merge Intervals (LC #56)
+Author: [Your Name]
+Date: [Today's Date]
+
+Problem Statement (LC #56):
+Given an array of intervals where intervals[i] = [start, end], 
+merge all overlapping intervals, and return an array of the non-overlapping intervals.
+
+Example:
+Input: intervals = [[1,3],[2,6],[8,10],[15,18]]
+Output: [[1,6],[8,10],[15,18]]
+"""
+
+# ----------------------------------------------------
+# Approach:
+# ----------------------------------------------------
+"""
+1. Sort intervals by start time.
+2. Traverse through intervals:
+   - If current interval overlaps with the last one in result → merge them.
+   - Else, add it as a new interval.
+3. Return merged intervals.
+
+Time Complexity: O(n log n) (for sorting)
+Space Complexity: O(n) (for result)
+"""
+
+def merge(intervals):
+    if not intervals:
+        return []
+    
+    # Step 1: Sort intervals by start time
+    intervals.sort(key=lambda x: x[0])
+    
+    merged = [intervals[0]]
+    
+    for current in intervals[1:]:
+        prev = merged[-1]
+        if current[0] <= prev[1]:  # Overlap
+            merged[-1][1] = max(prev[1], current[1])
+        else:
+            merged.append(current)
+    
+    return merged
+
+
+# ----------------------------------------------------
+# Example Usage
+# ----------------------------------------------------
+if __name__ == "__main__":
+    intervals = [[1,3],[2,6],[8,10],[15,18]]
+    print("Input:", intervals)
+    print("Merged Intervals:", merge(intervals))
+    # Expected Output: [[1,6],[8,10],[15,18]]
+    
+    intervals2 = [[1,4],[4,5]]
+    print("Input:", intervals2)
+    print("Merged Intervals:", merge(intervals2))
+    # Expected Output: [[1,5]]
+
+
+# ----------------------------------------------------
+# Key Notes:
+# ----------------------------------------------------
+# - Sort intervals → ensures easy merging.
+# - Greedy choice: merge as soon as overlap is detected.
+# - Used in scheduling, range merging, and timeline problems.
+# ----------------------------------------------------
