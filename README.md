@@ -337,3 +337,81 @@ if __name__ == "__main__":
 # - Greedy choice: merge as soon as overlap is detected.
 # - Used in scheduling, range merging, and timeline problems.
 # ----------------------------------------------------
+
+
+"""
+Day 33: Minimum Arrows to Burst Balloons (LC #452)
+Author: [Your Name]
+Date: [Today's Date]
+
+Problem Statement (LC #452):
+There are some spherical balloons taped onto a wall that represent intervals.
+Balloons are represented as [x_start, x_end] where x_start < x_end.
+You must burst all the balloons by shooting the minimum number of arrows.
+
+An arrow shot at coordinate x will burst all balloons where x_start <= x <= x_end.
+
+Return the minimum number of arrows required.
+
+Example:
+Input: points = [[10,16],[2,8],[1,6],[7,12]]
+Output: 2
+"""
+
+# ----------------------------------------------------
+# Approach:
+# ----------------------------------------------------
+"""
+1. Sort balloons by their end coordinate.
+2. Greedily place an arrow at the end of the first balloon.
+3. For each balloon:
+   - If its start <= arrow position → already burst.
+   - Else, shoot a new arrow at this balloon's end.
+4. Count arrows.
+
+Time Complexity: O(n log n) (sorting)
+Space Complexity: O(1)
+"""
+
+def findMinArrowShots(points):
+    if not points:
+        return 0
+    
+    # Sort by end coordinate
+    points.sort(key=lambda x: x[1])
+    
+    arrows = 1
+    arrow_pos = points[0][1]
+    
+    for start, end in points[1:]:
+        if start > arrow_pos:  # Need new arrow
+            arrows += 1
+            arrow_pos = end  # Place new arrow at current end
+    
+    return arrows
+
+
+# ----------------------------------------------------
+# Example Usage
+# ----------------------------------------------------
+if __name__ == "__main__":
+    points1 = [[10,16],[2,8],[1,6],[7,12]]
+    print("Input:", points1)
+    print("Minimum Arrows:", findMinArrowShots(points1))  # Expected: 2
+    
+    points2 = [[1,2],[3,4],[5,6],[7,8]]
+    print("Input:", points2)
+    print("Minimum Arrows:", findMinArrowShots(points2))  # Expected: 4
+    
+    points3 = [[1,2],[2,3],[3,4],[4,5]]
+    print("Input:", points3)
+    print("Minimum Arrows:", findMinArrowShots(points3))  # Expected: 2
+
+
+# ----------------------------------------------------
+# Key Notes:
+# ----------------------------------------------------
+# - Sort by balloon end coordinates.
+# - Always place arrow at the earliest possible end.
+# - Greedy choice ensures minimum arrows used.
+# ----------------------------------------------------
