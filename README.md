@@ -415,3 +415,76 @@ if __name__ == "__main__":
 # - Always place arrow at the earliest possible end.
 # - Greedy choice ensures minimum arrows used.
 # ----------------------------------------------------
+
+
+"""
+Day 34: Gas Station (LC #134)
+Author: [Your Name]
+Date: [Today's Date]
+
+Problem Statement (LC #134):
+There are n gas stations arranged in a circle, 
+where gas[i] is the amount of gas at station i, 
+and cost[i] is the cost to travel from station i to (i + 1).
+
+Return the starting gas station's index if you can travel around the circuit once, otherwise -1.
+
+Example:
+Input: gas = [1,2,3,4,5], cost = [3,4,5,1,2]
+Output: 3
+"""
+
+# ----------------------------------------------------
+# Approach:
+# ----------------------------------------------------
+"""
+1. If total gas < total cost → Impossible to complete circuit → return -1.
+2. Traverse stations while maintaining `tank` (current fuel).
+   - If tank < 0 at station i → cannot start from current start.
+   - Reset start = i+1, tank = 0.
+3. Return start index.
+
+Greedy Justification:
+- If you fail at station i, none of the stations between the last start and i can be valid start points.
+- So, skip directly to i+1.
+
+Time Complexity: O(n)
+Space Complexity: O(1)
+"""
+
+def canCompleteCircuit(gas, cost):
+    total_gas, total_cost = sum(gas), sum(cost)
+    if total_gas < total_cost:
+        return -1
+    
+    start, tank = 0, 0
+    for i in range(len(gas)):
+        tank += gas[i] - cost[i]
+        if tank < 0:
+            start = i + 1
+            tank = 0
+    return start
+
+
+# ----------------------------------------------------
+# Example Usage
+# ----------------------------------------------------
+if __name__ == "__main__":
+    gas1 = [1,2,3,4,5]
+    cost1 = [3,4,5,1,2]
+    print("Gas:", gas1, "Cost:", cost1)
+    print("Starting Station Index:", canCompleteCircuit(gas1, cost1))  # Expected: 3
+    
+    gas2 = [2,3,4]
+    cost2 = [3,4,3]
+    print("Gas:", gas2, "Cost:", cost2)
+    print("Starting Station Index:", canCompleteCircuit(gas2, cost2))  # Expected: -1
+
+
+# ----------------------------------------------------
+# Key Notes:
+# ----------------------------------------------------
+# - If total gas < total cost → impossible.
+# - Greedy reset ensures we only traverse array once.
+# - O(n) time, O(1) space → efficient.
+# ----------------------------------------------------
