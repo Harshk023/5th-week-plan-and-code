@@ -488,3 +488,119 @@ if __name__ == "__main__":
 # - Greedy reset ensures we only traverse array once.
 # - O(n) time, O(1) space → efficient.
 # ----------------------------------------------------
+
+
+"""
+Day 35: Practice Greedy Problems
+Author: [Your Name]
+Date: [Today's Date]
+
+Problems Covered:
+1. LeetCode #55 – Jump Game
+2. LeetCode #122 – Best Time to Buy and Sell Stock II
+3. LeetCode #409 – Longest Palindrome
+"""
+
+# ----------------------------------------------------
+# 1. LC #55 – Jump Game
+# ----------------------------------------------------
+"""
+Problem:
+Given an array nums where each element represents the maximum jump length at that position,
+determine if you can reach the last index.
+
+Greedy Approach:
+- Track the farthest reachable index while traversing.
+- If at any index, reachable < current index → return False.
+- If reachable >= last index → return True.
+
+Time Complexity: O(n)
+Space Complexity: O(1)
+"""
+
+def canJump(nums):
+    reachable = 0
+    for i, jump in enumerate(nums):
+        if i > reachable:
+            return False
+        reachable = max(reachable, i + jump)
+    return True
+
+
+# ----------------------------------------------------
+# 2. LC #122 – Best Time to Buy and Sell Stock II
+# ----------------------------------------------------
+"""
+Problem:
+You are given an array prices where prices[i] is the price of a stock on day i.
+You may complete as many transactions as you like, but must sell before buying again.
+
+Greedy Approach:
+- Buy whenever there's a profit opportunity (price[i] < price[i+1]).
+- Accumulate all positive differences.
+
+Time Complexity: O(n)
+Space Complexity: O(1)
+"""
+
+def maxProfit(prices):
+    profit = 0
+    for i in range(1, len(prices)):
+        if prices[i] > prices[i-1]:
+            profit += prices[i] - prices[i-1]
+    return profit
+
+
+# ----------------------------------------------------
+# 3. LC #409 – Longest Palindrome
+# ----------------------------------------------------
+"""
+Problem:
+Given a string, return the length of the longest palindrome that can be built with those letters.
+
+Greedy Approach:
+- Count frequency of each character.
+- Add even counts fully.
+- Add odd counts as (count - 1), and allow one odd in the middle.
+
+Time Complexity: O(n)
+Space Complexity: O(1) (since char set limited)
+"""
+
+def longestPalindrome(s):
+    from collections import Counter
+    freq = Counter(s)
+    
+    length = 0
+    odd_found = False
+    for count in freq.values():
+        if count % 2 == 0:
+            length += count
+        else:
+            length += count - 1
+            odd_found = True
+    return length + 1 if odd_found else length
+
+
+# ----------------------------------------------------
+# Example Usage
+# ----------------------------------------------------
+if __name__ == "__main__":
+    # Jump Game
+    print("Jump Game [2,3,1,1,4]:", canJump([2,3,1,1,4]))  # True
+    print("Jump Game [3,2,1,0,4]:", canJump([3,2,1,0,4]))  # False
+    
+    # Stock II
+    print("Max Profit [7,1,5,3,6,4]:", maxProfit([7,1,5,3,6,4]))  # 7
+    
+    # Longest Palindrome
+    print("Longest Palindrome 'abccccdd':", longestPalindrome("abccccdd"))  # 7
+
+
+# ----------------------------------------------------
+# Key Notes:
+# ----------------------------------------------------
+# - Jump Game → Reachability with greedy
+# - Stock II → Take every profitable transaction
+# - Longest Palindrome → Greedy counting of pairs
+# ----------------------------------------------------
